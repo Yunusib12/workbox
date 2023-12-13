@@ -6,7 +6,7 @@
   "author": "Ibrahim Yunus",
   "license": "MIT",
   "scripts": {
-    "build": "esbuild --outfile=/sw.js --bundle ./worker/index.ts && workbox injectManifest"
+    "build": "esbuild --outfile=./sw.js --bundle ./worker/index.ts && workbox injectManifest"
   },
   "devDependencies": {
     "esbuild": "^0.19.9",
