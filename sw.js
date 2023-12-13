@@ -3250,7 +3250,7 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
   };
 
   // worker/index.ts
-  precacheAndRoute([{"revision":"5a17ced669b4bd3d248b6072bbb2bcdb","url":"index.html"},{"revision":"21400dcea35cf8064e9b49ef8d47147e","url":"pages/contact.html"},{"revision":"72e0481ea8beb700b4f68b2ac6f439ff","url":"public/assets/css/style.css"},{"revision":"44f99d04e7916e9876298fd6235c81a7","url":"public/assets/js/app.js"},{"revision":"c2df5ee3c3efc3ff313e1758046776e6","url":"public/sw.js"},{"revision":"6f5c61289186291a5e97944eacc20f4c","url":"workbox-config.js"}]);
+  precacheAndRoute([{"revision":"5a17ced669b4bd3d248b6072bbb2bcdb","url":"index.html"},{"revision":"21400dcea35cf8064e9b49ef8d47147e","url":"pages/contact.html"},{"revision":"72e0481ea8beb700b4f68b2ac6f439ff","url":"public/assets/css/style.css"},{"revision":"44f99d04e7916e9876298fd6235c81a7","url":"public/assets/js/app.js"}]);
   var MAX_AGE_SECONDS = 30 * 24 * 60 * 60;
   var MAX_ENTRIES = 60;
   var NETWORK_TIMEOUT_SECONDS = 3;
