@@ -22,7 +22,7 @@ displayWord()
 
 window.addEventListener('load', () => {
     if('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/public/sw.js').then(() => {
+        navigator.serviceWorker.register('sw.js').then(() => {
             console.log("Service Worker registered")
         }).catch(error => {
             console.log("An error occured", error)
