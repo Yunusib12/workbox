@@ -67,6 +67,8 @@ registerRoute(
     })
 )
 
+// @ts-ignore
+self.skipWaiting()
 
 // Cleaning outdated Caches
 cleanupOutdatedCaches()
