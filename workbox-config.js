@@ -6,7 +6,8 @@ module.exports = {
 	globIgnores:[
 		'**/workbox-config.js',
 		'**/sw.js',
-		'node_modules/**/*'
+		'node_modules/**/*',
+		'**/package.json'
 	],
 	swDest: './sw.js',
 	swSrc: './sw.js'
