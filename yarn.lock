@@ -3686,7 +3686,7 @@ workbox-range-requests@7.0.0:
   dependencies:
     workbox-core "7.0.0"
 
-workbox-recipes@7.0.0:
+workbox-recipes@7.0.0, workbox-recipes@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/workbox-recipes/-/workbox-recipes-7.0.0.tgz#1a6a01c8c2dfe5a41eef0fed3fe517e8a45c6514"
   integrity sha512-DntcK9wuG3rYQOONWC0PejxYYIDHyWWZB/ueTbOUDQgefaeIj1kJ7pdP3LZV2lfrj8XXXBWt+JDRSw1lLLOnww==

@@ -1,51 +1,51 @@
-import { precacheAndRoute, cleanupOutdatedCaches } from 'workbox-precaching'
-import { registerRoute } from 'workbox-routing'
-import { NetworkFirst, CacheFirst } from 'workbox-strategies'
-import { CacheableResponsePlugin } from 'workbox-cacheable-response'
-import {ExpirationPlugin} from 'workbox-expiration'
+import { precacheAndRoute, cleanupOutdatedCaches } from "workbox-precaching";
+import { registerRoute, setDefaultHandler } from "workbox-routing";
+import { NetworkFirst, CacheFirst, NetworkOnly } from "workbox-strategies";
+import { CacheableResponsePlugin } from "workbox-cacheable-response";
+import { ExpirationPlugin } from "workbox-expiration";
+import { offlineFallback } from "workbox-recipes";
 
-declare const self: ServiceWorkerGlobalScope
+declare const self: ServiceWorkerGlobalScope;
 
-/** 
-* Takes in an array describing which urls we would like cached, along
-* with revision information to keep track of whether what's already
-* cached is up to date, the array is called precache manifest
-* self.__WB_MANIFEST the placeholder provided instead of a list 
-* which will be replace during the build process with a up-to-date
-* precache manifest
-*/
-precacheAndRoute(self.__WB_MANIFEST)
+/**
+ * Takes in an array describing which urls we would like cached, along
+ * with revision information to keep track of whether what's already
+ * cached is up to date, the array is called precache manifest
+ * self.__WB_MANIFEST the placeholder provided instead of a list
+ * which will be replace during the build process with a up-to-date
+ * precache manifest
+ */
+precacheAndRoute(self.__WB_MANIFEST);
 
 const MAX_AGE_SECONDS = 30 * 24 * 60 * 60;
 const MAX_ENTRIES = 60;
-const NETWORK_TIMEOUT_SECONDS = 3
+const NETWORK_TIMEOUT_SECONDS = 3;
 
-const cacheNamePage = 'pages'
-const matchCallbackPage = ({request}) => request.mode === 'navigate'
+const cacheNamePage = "pages";
+const matchCallbackPage = ({ request }) => request.mode === "navigate";
 
-
-// Page Cache 
+// Page Cache
 // https://developer.chrome.com/docs/workbox/modules/workbox-recipes#page_cache
 registerRoute(
-    matchCallbackPage,
-    new NetworkFirst({
-        networkTimeoutSeconds: NETWORK_TIMEOUT_SECONDS, 
-        cacheName:cacheNamePage, 
-        plugins: [
-            new CacheableResponsePlugin({
-                statuses: [0, 200]
-            })
-        ]
-    })
-)
+  matchCallbackPage,
+  new NetworkFirst({
+    networkTimeoutSeconds: NETWORK_TIMEOUT_SECONDS,
+    cacheName: cacheNamePage,
+    plugins: [
+      new CacheableResponsePlugin({
+        statuses: [0, 200],
+      }),
+    ],
+  })
+);
 
-// Image Cache 
+// Image Cache
 // https://developer.chrome.com/docs/workbox/modules/workbox-recipes#image_cache
-const cacheNameImage = 'images';
-const matchCallbackImage = ({request}) => request.destination === 'image';
+const cacheNameImage = "images";
+const matchCallbackImage = ({ request }) => request.destination === "image";
 
 registerRoute(
-    matchCallbackImage,
+  matchCallbackImage,
   new CacheFirst({
     cacheName: cacheNameImage,
     plugins: [
@@ -61,14 +61,23 @@ registerRoute(
 );
 
 registerRoute(
-    ({url}) => url.origin === 'https://random-word-api.herokuapp.com',
-    new NetworkFirst({
-        cacheName: 'api-reponses',
-    })
-)
+  ({ url }) => url.origin === "https://random-word-api.herokuapp.com",
+  new NetworkFirst({
+    cacheName: "api-reponses",
+  })
+);
+
+// OfflineFallback Page
+//https://developer.chrome.com/docs/workbox/modules/workbox-recipes#offline_fallback
+setDefaultHandler(new NetworkOnly());
+
+offlineFallback({
+  pageFallback: "pages/offline.html",
+  imageFallback: "assets/images/svg/no-image.svg",
+});
 
 // @ts-ignore
-self.skipWaiting()
+self.skipWaiting();
 
 // Cleaning outdated Caches
-cleanupOutdatedCaches()
+cleanupOutdatedCaches();
