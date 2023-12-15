@@ -2161,12 +2161,6 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
     });
   }
 
-  // node_modules/workbox-precaching/matchPrecache.js
-  function matchPrecache(request) {
-    const precacheController2 = getOrCreatePrecacheController();
-    return precacheController2.matchPrecache(request);
-  }
-
   // node_modules/workbox-precaching/precache.js
   function precache(entries) {
     const precacheController2 = getOrCreatePrecacheController();
@@ -2177,18 +2171,6 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
   function precacheAndRoute(entries, options) {
     precache(entries);
     addRoute(options);
-  }
-
-  // node_modules/workbox-routing/setCatchHandler.js
-  function setCatchHandler(handler) {
-    const defaultRouter2 = getOrCreateDefaultRouter();
-    defaultRouter2.setCatchHandler(handler);
-  }
-
-  // node_modules/workbox-routing/setDefaultHandler.js
-  function setDefaultHandler(handler) {
-    const defaultRouter2 = getOrCreateDefaultRouter();
-    defaultRouter2.setDefaultHandler(handler);
   }
 
   // node_modules/workbox-strategies/utils/messages.js
@@ -2436,75 +2418,6 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
             logs.push(`No response found in the '${this.cacheName}' cache.`);
           }
         }
-      }
-      return response;
-    }
-  };
-
-  // node_modules/workbox-strategies/NetworkOnly.js
-  var NetworkOnly = class extends Strategy {
-    /**
-     * @param {Object} [options]
-     * @param {Array<Object>} [options.plugins] [Plugins]{@link https://developers.google.com/web/tools/workbox/guides/using-plugins}
-     * to use in conjunction with this caching strategy.
-     * @param {Object} [options.fetchOptions] Values passed along to the
-     * [`init`](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters)
-     * of [non-navigation](https://github.com/GoogleChrome/workbox/issues/1796)
-     * `fetch()` requests made by this strategy.
-     * @param {number} [options.networkTimeoutSeconds] If set, any network requests
-     * that fail to respond within the timeout will result in a network error.
-     */
-    constructor(options = {}) {
-      super(options);
-      this._networkTimeoutSeconds = options.networkTimeoutSeconds || 0;
-    }
-    /**
-     * @private
-     * @param {Request|string} request A request to run this strategy for.
-     * @param {workbox-strategies.StrategyHandler} handler The event that
-     *     triggered the request.
-     * @return {Promise<Response>}
-     */
-    async _handle(request, handler) {
-      if (true) {
-        finalAssertExports.isInstance(request, Request, {
-          moduleName: "workbox-strategies",
-          className: this.constructor.name,
-          funcName: "_handle",
-          paramName: "request"
-        });
-      }
-      let error = void 0;
-      let response;
-      try {
-        const promises = [
-          handler.fetch(request)
-        ];
-        if (this._networkTimeoutSeconds) {
-          const timeoutPromise = timeout(this._networkTimeoutSeconds * 1e3);
-          promises.push(timeoutPromise);
-        }
-        response = await Promise.race(promises);
-        if (!response) {
-          throw new Error(`Timed out the network response after ${this._networkTimeoutSeconds} seconds.`);
-        }
-      } catch (err) {
-        if (err instanceof Error) {
-          error = err;
-        }
-      }
-      if (true) {
-        logger.groupCollapsed(messages2.strategyStart(this.constructor.name, request));
-        if (response) {
-          logger.log(`Got response from network.`);
-        } else {
-          logger.log(`Unable to get a response from the network.`);
-        }
-        messages2.printFinalResponse(response);
-        logger.groupEnd();
-      }
-      if (!response) {
-        throw new WorkboxError("no-response", { url: request.url, error });
       }
       return response;
     }
@@ -3336,47 +3249,6 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
     }
   };
 
-  // node_modules/workbox-recipes/_version.js
-  try {
-    self["workbox:recipes:7.0.0"] && _();
-  } catch (e) {
-  }
-
-  // node_modules/workbox-recipes/offlineFallback.js
-  function offlineFallback(options = {}) {
-    const pageFallback = options.pageFallback || "offline.html";
-    const imageFallback = options.imageFallback || false;
-    const fontFallback = options.fontFallback || false;
-    self.addEventListener("install", (event) => {
-      const files = [pageFallback];
-      if (imageFallback) {
-        files.push(imageFallback);
-      }
-      if (fontFallback) {
-        files.push(fontFallback);
-      }
-      event.waitUntil(self.caches.open("workbox-offline-fallbacks").then((cache) => cache.addAll(files)));
-    });
-    const handler = async (options2) => {
-      const dest = options2.request.destination;
-      const cache = await self.caches.open("workbox-offline-fallbacks");
-      if (dest === "document") {
-        const match = await matchPrecache(pageFallback) || await cache.match(pageFallback);
-        return match || Response.error();
-      }
-      if (dest === "image" && imageFallback !== false) {
-        const match = await matchPrecache(imageFallback) || await cache.match(imageFallback);
-        return match || Response.error();
-      }
-      if (dest === "font" && fontFallback !== false) {
-        const match = await matchPrecache(fontFallback) || await cache.match(fontFallback);
-        return match || Response.error();
-      }
-      return Response.error();
-    };
-    setCatchHandler(handler);
-  }
-
   // worker/index.ts
   precacheAndRoute([{"revision":"0257c5ce75fd383a0e3948fd8f120acc","url":"index.html"},{"revision":"2c8cd6a8da14e4f3b0c864fb1bd28764","url":"pages/contact.html"},{"revision":"b24a441a143c27d87f2cd4a1429b239f","url":"pages/offline.html"},{"revision":"9d253109c222b27e14c3eec19dfef18b","url":"public/assets/css/style.css"},{"revision":"398d5b3d0ca670b91345e613a26f4207","url":"public/assets/js/app.js"},{"revision":"382bd92cb232cf8fcaeb9276b949f1ee","url":"public/manifest.json"}]);
   var MAX_AGE_SECONDS = 30 * 24 * 60 * 60;
@@ -3419,11 +3291,6 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
       cacheName: "api-reponses"
     })
   );
-  setDefaultHandler(new NetworkOnly());
-  offlineFallback({
-    pageFallback: "pages/offline.html",
-    imageFallback: "assets/images/svg/no-image.svg"
-  });
   self.skipWaiting();
   cleanupOutdatedCaches();
 })();

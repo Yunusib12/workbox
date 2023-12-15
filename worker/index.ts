@@ -69,12 +69,12 @@ registerRoute(
 
 // OfflineFallback Page
 //https://developer.chrome.com/docs/workbox/modules/workbox-recipes#offline_fallback
-setDefaultHandler(new NetworkOnly());
+// setDefaultHandler(new NetworkOnly());
 
-offlineFallback({
-  pageFallback: "pages/offline.html",
-  imageFallback: "assets/images/svg/no-image.svg",
-});
+// offlineFallback({
+//   pageFallback: "pages/offline.html",
+//   imageFallback: "assets/images/svg/no-image.svg",
+// });
 
 // @ts-ignore
 self.skipWaiting();
